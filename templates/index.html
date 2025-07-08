@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Merger</title>
+    <!-- Link to our stylesheet and Font Awesome icons -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Main container -->
+    <div class="container">
+        <!-- Card component for main content -->
+        <div class="card">
+            <!-- Header with icon -->
+            <h1><i class="fas fa-file-pdf"></i> PDF Merger</h1>
+            
+            <!-- Alert container for displaying messages -->
+            <div id="alert" class="alert" style="display: none;"></div>
+
+            <!-- Upload form -->
+            <form id="upload-form" class="upload-form">
+                <!-- File input container with custom styling -->
+                <div class="file-input-container">
+                    <!-- Hidden file input -->
+                    <input type="file" name="files[]" multiple accept=".pdf" id="file-input" class="file-input">
+                    <!-- Custom styled label for file input -->
+                    <label for="file-input" class="file-input-label">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <span>Choose PDF files</span>
+                    </label>
+                </div>
+
+                <!-- List of uploaded files -->
+                <div id="file-list" class="file-list">
+                    {% for file in files %}
+                    <!-- File item with remove button -->
+                    <div class="file-item" data-file-id="{{ file.id }}">
+                        <i class="fas fa-file-pdf"></i>
+                        <span>{{ file.name }}</span>
+                        <button type="button" class="remove-file" onclick="removeFile('{{ file.id }}')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Action buttons -->
+                <div class="button-group">
+                    <!-- Clear all files button -->
+                    <button type="button" id="clear-btn" class="secondary-btn" onclick="clearFiles()" {% if not files %}disabled{% endif %}>
+                        <i class="fas fa-trash"></i> Clear All
+                    </button>
+                    <!-- Merge PDFs button -->
+                    <button type="button" id="merge-btn" class="primary-btn" onclick="mergeFiles()" {% if not files %}disabled{% endif %}>
+                        <i class="fas fa-compress-alt"></i> Merge PDFs
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Link to our JavaScript file -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
